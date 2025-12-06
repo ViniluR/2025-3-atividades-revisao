@@ -1,63 +1,135 @@
-import Image from "next/image";
+"use client";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+interface Recipe {
+  id: number;
+  name: string;
+  cuisine: string;
+  difficulty: string;
+  prepTime: number;
+  cookTime: number;
+  servings: number;
+}
+
+const recipes: Recipe[] = [
+  {
+    id: 1,
+    name: "Spaghetti Carbonara",
+    cuisine: "Italian",
+    difficulty: "Medium",
+    prepTime: 10,
+    cookTime: 20,
+    servings: 4,
+  },
+  {
+    id: 2,
+    name: "Pad Thai",
+    cuisine: "Thai",
+    difficulty: "Medium",
+    prepTime: 15,
+    cookTime: 15,
+    servings: 3,
+  },
+  {
+    id: 3,
+    name: "Caesar Salad",
+    cuisine: "American",
+    difficulty: "Easy",
+    prepTime: 15,
+    cookTime: 0,
+    servings: 2,
+  },
+  {
+    id: 4,
+    name: "Beef Stroganoff",
+    cuisine: "Russian",
+    difficulty: "Hard",
+    prepTime: 20,
+    cookTime: 40,
+    servings: 6,
+  },
+  {
+    id: 5,
+    name: "Margherita Pizza",
+    cuisine: "Italian",
+    difficulty: "Medium",
+    prepTime: 30,
+    cookTime: 15,
+    servings: 4,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-4">
+      <main className="max-w-4xl mx-auto">
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-8">
+          <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
+            Receitinhas do vinilu
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-gray-600 dark:text-gray-400 mb-8">
+            as melhores receitas selecionadas a mão pelo vinilu
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          
+          <div className="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-zinc-800">
+                  <TableHead className="text-black dark:text-white">Name</TableHead>
+                  <TableHead className="text-black dark:text-white">Cuisine</TableHead>
+                  <TableHead className="text-black dark:text-white">Difficulty</TableHead>
+                  <TableHead className="text-black dark:text-white">Prep Time</TableHead>
+                  <TableHead className="text-black dark:text-white">Cook Time</TableHead>
+                  <TableHead className="text-black dark:text-white">Servings</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recipes.map((recipe) => (
+                  <TableRow
+                    key={recipe.id}
+                    className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-800"
+                  >
+                    <TableCell className="font-semibold text-black dark:text-white">
+                      {recipe.name}
+                    </TableCell>
+                    <TableCell className="text-gray-700 dark:text-gray-300">
+                      {recipe.cuisine}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          recipe.difficulty === "Easy"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                            : recipe.difficulty === "Medium"
+                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                        }`}
+                      >
+                        {recipe.difficulty}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-gray-700 dark:text-gray-300">
+                      {recipe.prepTime}m
+                    </TableCell>
+                    <TableCell className="text-gray-700 dark:text-gray-300">
+                      {recipe.cookTime}m
+                    </TableCell>
+                    <TableCell className="text-gray-700 dark:text-gray-300">
+                      {recipe.servings}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </main>
     </div>
