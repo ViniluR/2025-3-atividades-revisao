@@ -6,7 +6,7 @@
 - **Professor**: [L A Minora](https://github.com/leonardo-minora/)
 - **Aluno**: Vinicius Henrique
 
-## Atividade
+## Atividad
 
 1. Fork desse repositório
 2. Crie um projeto React (Next + Typescript + Shadcn + Tailwind), realize commit
