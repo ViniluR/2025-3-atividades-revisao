@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -68,6 +69,12 @@ const recipes: Recipe[] = [
 ];
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-4">
       <main className="max-w-4xl mx-auto">
@@ -78,7 +85,20 @@ export default function Home() {
           <p className="text-gray-600 dark:text-gray-400 mb-8">
             as melhores receitas selecionadas a mão pelo vinilu
           </p>
+
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="🔍 Buscar receita..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+            />
+          </div>
           
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            {filteredRecipes.length} receita{filteredRecipes.length !== 1 ? "s" : ""} encontrada{filteredRecipes.length !== 1 ? "s" : ""}
+          </p>
           <div className="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <Table>
               <TableHeader>
@@ -92,7 +112,8 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recipes.map((recipe) => (
+                {filteredRecipes.length > 0 ? (
+                  filteredRecipes.map((recipe) => (
                   <TableRow
                     key={recipe.id}
                     className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-800"
@@ -126,7 +147,14 @@ export default function Home() {
                       {recipe.servings}
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-gray-500 dark:text-gray-400">
+                      Nenhuma receita encontrada com "{searchTerm}"
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
