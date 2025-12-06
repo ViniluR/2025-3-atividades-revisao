@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -20,56 +20,15 @@ interface Recipe {
   servings: number;
 }
 
-const recipes: Recipe[] = [
-  {
-    id: 1,
-    name: "Spaghetti Carbonara",
-    cuisine: "Italian",
-    difficulty: "Medium",
-    prepTime: 10,
-    cookTime: 20,
-    servings: 4,
-  },
-  {
-    id: 2,
-    name: "Pad Thai",
-    cuisine: "Thai",
-    difficulty: "Medium",
-    prepTime: 15,
-    cookTime: 15,
-    servings: 3,
-  },
-  {
-    id: 3,
-    name: "Caesar Salad",
-    cuisine: "American",
-    difficulty: "Easy",
-    prepTime: 15,
-    cookTime: 0,
-    servings: 2,
-  },
-  {
-    id: 4,
-    name: "Beef Stroganoff",
-    cuisine: "Russian",
-    difficulty: "Hard",
-    prepTime: 20,
-    cookTime: 40,
-    servings: 6,
-  },
-  {
-    id: 5,
-    name: "Margherita Pizza",
-    cuisine: "Italian",
-    difficulty: "Medium",
-    prepTime: 30,
-    cookTime: 15,
-    servings: 4,
-  },
-];
-
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+
+  useEffect(() => {
+    fetch("https://dummyjson.com/recipes")
+      .then((res) => res.json())
+      .then((data) => setRecipes(data.recipes));
+  }, []);
 
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -95,62 +54,79 @@ export default function Home() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
             />
           </div>
-          
+
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            {filteredRecipes.length} receita{filteredRecipes.length !== 1 ? "s" : ""} encontrada{filteredRecipes.length !== 1 ? "s" : ""}
+            {filteredRecipes.length} receita
+            {filteredRecipes.length !== 1 ? "s" : ""} encontrada
+            {filteredRecipes.length !== 1 ? "s" : ""}
           </p>
           <div className="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100 dark:bg-zinc-800">
-                  <TableHead className="text-black dark:text-white">Name</TableHead>
-                  <TableHead className="text-black dark:text-white">Cuisine</TableHead>
-                  <TableHead className="text-black dark:text-white">Difficulty</TableHead>
-                  <TableHead className="text-black dark:text-white">Prep Time</TableHead>
-                  <TableHead className="text-black dark:text-white">Cook Time</TableHead>
-                  <TableHead className="text-black dark:text-white">Servings</TableHead>
+                  <TableHead className="text-black dark:text-white">
+                    Name
+                  </TableHead>
+                  <TableHead className="text-black dark:text-white">
+                    Cuisine
+                  </TableHead>
+                  <TableHead className="text-black dark:text-white">
+                    Difficulty
+                  </TableHead>
+                  <TableHead className="text-black dark:text-white">
+                    Prep Time
+                  </TableHead>
+                  <TableHead className="text-black dark:text-white">
+                    Cook Time
+                  </TableHead>
+                  <TableHead className="text-black dark:text-white">
+                    Servings
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredRecipes.length > 0 ? (
                   filteredRecipes.map((recipe) => (
-                  <TableRow
-                    key={recipe.id}
-                    className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-800"
-                  >
-                    <TableCell className="font-semibold text-black dark:text-white">
-                      {recipe.name}
-                    </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">
-                      {recipe.cuisine}
-                    </TableCell>
-                    <TableCell>
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          recipe.difficulty === "Easy"
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                            : recipe.difficulty === "Medium"
-                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                        }`}
-                      >
-                        {recipe.difficulty}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">
-                      {recipe.prepTime}m
-                    </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">
-                      {recipe.cookTime}m
-                    </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">
-                      {recipe.servings}
-                    </TableCell>
-                  </TableRow>
-                ))
+                    <TableRow
+                      key={recipe.id}
+                      className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-800"
+                    >
+                      <TableCell className="font-semibold text-black dark:text-white">
+                        {recipe.name}
+                      </TableCell>
+                      <TableCell className="text-gray-700 dark:text-gray-300">
+                        {recipe.cuisine}
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            recipe.difficulty === "Easy"
+                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                              : recipe.difficulty === "Medium"
+                              ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                          }`}
+                        >
+                          {recipe.difficulty}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-gray-700 dark:text-gray-300">
+                        {recipe.prepTime}m
+                      </TableCell>
+                      <TableCell className="text-gray-700 dark:text-gray-300">
+                        {recipe.cookTime}m
+                      </TableCell>
+                      <TableCell className="text-gray-700 dark:text-gray-300">
+                        {recipe.servings}
+                      </TableCell>
+                    </TableRow>
+                  ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-8 text-gray-500 dark:text-gray-400"
+                    >
                       Nenhuma receita encontrada com "{searchTerm}"
                     </TableCell>
                   </TableRow>
